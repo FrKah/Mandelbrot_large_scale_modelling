@@ -1,0 +1,167 @@
+1,41.7189
+RANK,1,0,41.7143
+1,39.4580
+RANK,1,0,39.4530
+1,38.6088
+RANK,1,0,38.6033
+2,29.3873
+RANK,2,0,8.6615
+RANK,2,1,29.3748
+2,29.1751
+RANK,2,0,8.3154
+RANK,2,1,29.1785
+2,30.0498
+RANK,2,0,8.1852
+RANK,2,1,30.0450
+4,19.6911
+RANK,4,0,1.4730
+RANK,4,1,7.0457
+RANK,4,2,19.6864
+RANK,4,3,10.7111
+4,23.1541
+RANK,4,0,1.3490
+RANK,4,1,7.1828
+RANK,4,2,23.1487
+RANK,4,3,9.8742
+4,19.4906
+RANK,4,0,1.4998
+RANK,4,1,6.7943
+RANK,4,2,19.4852
+RANK,4,3,9.8911
+8,11.8760
+RANK,8,0,0.5673
+RANK,8,1,0.8903
+RANK,8,2,2.6188
+RANK,8,3,4.1850
+RANK,8,4,8.1626
+RANK,8,5,11.8722
+RANK,8,6,8.7957
+RANK,8,7,1.1620
+8,12.0568
+RANK,8,0,0.5094
+RANK,8,1,0.9015
+RANK,8,2,2.6498
+RANK,8,3,4.8637
+RANK,8,4,8.4589
+RANK,8,5,12.0602
+RANK,8,6,8.8989
+RANK,8,7,1.1012
+8,12.0677
+RANK,8,0,0.5669
+RANK,8,1,0.9006
+RANK,8,2,2.6808
+RANK,8,3,4.3967
+RANK,8,4,8.5011
+RANK,8,5,12.0643
+RANK,8,6,8.5515
+RANK,8,7,1.0956
+16,6.7769
+RANK,16,0,0.2217
+RANK,16,1,0.3242
+RANK,16,2,0.4154
+RANK,16,3,0.4532
+RANK,16,4,0.8514
+RANK,16,5,1.8243
+RANK,16,6,2.2592
+RANK,16,7,1.9779
+RANK,16,8,3.4037
+RANK,16,9,5.5833
+RANK,16,10,5.2817
+RANK,16,11,6.2564
+RANK,16,12,6.7741
+RANK,16,13,4.1665
+RANK,16,14,0.9242
+RANK,16,15,0.3925
+16,6.3412
+RANK,16,0,0.2115
+RANK,16,1,0.3147
+RANK,16,2,0.4226
+RANK,16,3,0.4811
+RANK,16,4,0.7562
+RANK,16,5,1.8769
+RANK,16,6,2.3449
+RANK,16,7,1.9302
+RANK,16,8,3.4078
+RANK,16,9,4.6931
+RANK,16,10,5.2341
+RANK,16,11,6.3381
+RANK,16,12,6.0778
+RANK,16,13,4.1924
+RANK,16,14,0.9038
+RANK,16,15,0.4120
+16,6.1159
+RANK,16,0,0.2139
+RANK,16,1,0.3256
+RANK,16,2,0.3984
+RANK,16,3,0.4790
+RANK,16,4,0.7696
+RANK,16,5,1.7847
+RANK,16,6,2.4139
+RANK,16,7,1.9522
+RANK,16,8,3.4986
+RANK,16,9,4.7721
+RANK,16,10,5.2521
+RANK,16,11,6.1204
+RANK,16,12,5.7260
+RANK,16,13,4.2466
+RANK,16,14,0.9078
+RANK,16,15,0.4136
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 29610271: <Mandelbrot_bench> in cluster <dcc> Done
+
+Job <Mandelbrot_bench> was submitted from host <n-62-27-23> by user <s262240> in cluster <dcc> at Tue Oct  6 10:59:04 2026
+Job was executed on host(s) <16*n-62-21-76>, in queue <hpcintro>, as user <s262240> in cluster <dcc> at Tue Oct  6 10:59:05 2026
+</zhome/55/9/232051> was used as the home directory.
+</zhome/55/9/232051/02616-student/Mandelbrot_large_scale_modelling> was used as the working directory.
+Started at Tue Oct  6 10:59:05 2026
+Terminated at Tue Oct  6 11:04:41 2026
+Results reported at Tue Oct  6 11:04:41 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#BSUB -J Mandelbrot_bench
+#BSUB -o Mandelbrot_bench%J.out
+#BSUB -e Mandelbrot_bench%J.err
+#BSUB -n 16
+#BSUB -R "span[hosts=1]"
+#BSUB -q hpcintro
+#BSUB -W 00:30
+#BSUB -R "rusage[mem=1GB]"
+
+module load matplotlib/3.10.3-numpy-2.3.1-python-3.12.11
+module load mpi4py/4.0.3-python-3.12.11-openmpi-5.0.8
+
+for p in 1 2 4 8 16; do
+    for rep in 1 2 3; do
+        mpirun -n $p python3 -u MandelbrotEachNodeTime.py 10 1000x1000
+    done
+done
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   1179.35 sec.
+    Max Memory :                                 365 MB
+    Average Memory :                             292.80 MB
+    Total Requested Memory :                     16384.00 MB
+    Delta Memory :                               16019.00 MB
+    Max Swap :                                   -
+    Max Processes :                              8
+    Max Threads :                                19
+    Run time :                                   336 sec.
+    Turnaround time :                            337 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <Mandelbrot_bench29610271.err> for stderr output of this job.
+
