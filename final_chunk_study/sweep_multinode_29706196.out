@@ -1,0 +1,112 @@
+=== [MULTI-NODE] Executant ranks=1, chunk_size=1 ===
+=== [MULTI-NODE] Executant ranks=1, chunk_size=2 ===
+=== [MULTI-NODE] Executant ranks=1, chunk_size=4 ===
+=== [MULTI-NODE] Executant ranks=1, chunk_size=8 ===
+=== [MULTI-NODE] Executant ranks=1, chunk_size=16 ===
+=== [MULTI-NODE] Executant ranks=1, chunk_size=32 ===
+=== [MULTI-NODE] Executant ranks=1, chunk_size=64 ===
+=== [MULTI-NODE] Executant ranks=2, chunk_size=1 ===
+=== [MULTI-NODE] Executant ranks=2, chunk_size=2 ===
+=== [MULTI-NODE] Executant ranks=2, chunk_size=4 ===
+=== [MULTI-NODE] Executant ranks=2, chunk_size=8 ===
+=== [MULTI-NODE] Executant ranks=2, chunk_size=16 ===
+=== [MULTI-NODE] Executant ranks=2, chunk_size=32 ===
+=== [MULTI-NODE] Executant ranks=2, chunk_size=64 ===
+=== [MULTI-NODE] Executant ranks=4, chunk_size=1 ===
+=== [MULTI-NODE] Executant ranks=4, chunk_size=2 ===
+=== [MULTI-NODE] Executant ranks=4, chunk_size=4 ===
+=== [MULTI-NODE] Executant ranks=4, chunk_size=8 ===
+=== [MULTI-NODE] Executant ranks=4, chunk_size=16 ===
+=== [MULTI-NODE] Executant ranks=4, chunk_size=32 ===
+=== [MULTI-NODE] Executant ranks=4, chunk_size=64 ===
+=== [MULTI-NODE] Executant ranks=8, chunk_size=1 ===
+=== [MULTI-NODE] Executant ranks=8, chunk_size=2 ===
+=== [MULTI-NODE] Executant ranks=8, chunk_size=4 ===
+=== [MULTI-NODE] Executant ranks=8, chunk_size=8 ===
+=== [MULTI-NODE] Executant ranks=8, chunk_size=16 ===
+=== [MULTI-NODE] Executant ranks=8, chunk_size=32 ===
+=== [MULTI-NODE] Executant ranks=8, chunk_size=64 ===
+=== [MULTI-NODE] Executant ranks=16, chunk_size=1 ===
+=== [MULTI-NODE] Executant ranks=16, chunk_size=2 ===
+=== [MULTI-NODE] Executant ranks=16, chunk_size=4 ===
+=== [MULTI-NODE] Executant ranks=16, chunk_size=8 ===
+=== [MULTI-NODE] Executant ranks=16, chunk_size=16 ===
+=== [MULTI-NODE] Executant ranks=16, chunk_size=32 ===
+=== [MULTI-NODE] Executant ranks=16, chunk_size=64 ===
+Escombrat multi-node completat amb èxit!
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 29706196: <sweep_multinode> in cluster <dcc> Done
+
+Job <sweep_multinode> was submitted from host <hpclogin1> by user <s253168> in cluster <dcc> at Tue Oct 13 10:21:35 2026
+Job was executed on host(s) <4*n-62-21-76>, in queue <hpcintro>, as user <s253168> in cluster <dcc> at Tue Oct 13 10:21:35 2026
+                            <4*n-62-21-46>
+                            <4*n-62-21-77>
+                            <4*n-62-21-47>
+</zhome/de/c/223411> was used as the home directory.
+</zhome/de/c/223411/02616_LSM/Project1/final_chunk_study> was used as the working directory.
+Started at Tue Oct 13 10:21:35 2026
+Terminated at Tue Oct 13 11:08:25 2026
+Results reported at Tue Oct 13 11:08:25 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -J sweep_multinode
+#BSUB -o sweep_multinode_%J.out
+#BSUB -e sweep_multinode_%J.err
+#BSUB -n 16
+#BSUB -R "span[ptile=4]"
+#BSUB -q hpcintro
+#BSUB -W 01:00
+#BSUB -R "rusage[mem=2GB]"
+
+module load matplotlib/3.10.6-numpy-2.3.1-python-3.12.11
+module load mpi4py/4.0.3-python-3.12.11-openmpi-5.0.8
+
+OUTPUT="benchmark_sweep_multinode_final.csv"
+PYTHON_SCRIPT="Mandelbrot_chunks.py"
+IMG_SIZE="2000x2000"
+
+echo "ranks,chunk_size,total_time,max_comp,min_comp,avg_comp" > "$OUTPUT"
+
+RANKS=(1 2 4 8 16)
+CHUNKS=(1 2 4 8 16 32 64)
+
+for P in "${RANKS[@]}"; do
+    for C in "${CHUNKS[@]}"; do
+        echo "=== [MULTI-NODE] Executant ranks=$P, chunk_size=$C ==="
+        mpirun -n "$P" python3 "$PYTHON_SCRIPT" "$C" "$IMG_SIZE" >> "$OUTPUT"
+    done
+done
+
+echo "Escombrat multi-node completat amb èxit!"
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   7497.36 sec.
+    Max Memory :                                 688 MB
+    Average Memory :                             244.76 MB
+    Total Requested Memory :                     32768.00 MB
+    Delta Memory :                               32080.00 MB
+    Max Swap :                                   -
+    Max Processes :                              14
+    Max Threads :                                76
+    Run time :                                   2810 sec.
+    Turnaround time :                            2810 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <sweep_multinode_29706196.err> for stderr output of this job.
+

@@ -1,0 +1,86 @@
+=== [1-NODE] Executant ranks=1, chunk_size=1 ===
+=== [1-NODE] Executant ranks=1, chunk_size=2 ===
+=== [1-NODE] Executant ranks=1, chunk_size=4 ===
+=== [1-NODE] Executant ranks=1, chunk_size=8 ===
+=== [1-NODE] Executant ranks=1, chunk_size=16 ===
+=== [1-NODE] Executant ranks=1, chunk_size=32 ===
+=== [1-NODE] Executant ranks=1, chunk_size=64 ===
+=== [1-NODE] Executant ranks=2, chunk_size=1 ===
+=== [1-NODE] Executant ranks=2, chunk_size=2 ===
+=== [1-NODE] Executant ranks=2, chunk_size=4 ===
+=== [1-NODE] Executant ranks=2, chunk_size=8 ===
+=== [1-NODE] Executant ranks=2, chunk_size=16 ===
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 29704160: <sweep_1node> in cluster <dcc> Exited
+
+Job <sweep_1node> was submitted from host <hpclogin1> by user <s253168> in cluster <dcc> at Mon Oct 12 21:22:13 2026
+Job was executed on host(s) <16*n-62-21-76>, in queue <hpcintro>, as user <s253168> in cluster <dcc> at Mon Oct 12 21:22:14 2026
+</zhome/de/c/223411> was used as the home directory.
+</zhome/de/c/223411/02616_LSM/Project1/final_chunk_study> was used as the working directory.
+Started at Mon Oct 12 21:22:14 2026
+Terminated at Mon Oct 12 21:52:29 2026
+Results reported at Mon Oct 12 21:52:29 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -J sweep_1node
+#BSUB -o sweep_1node_%J.out
+#BSUB -e sweep_1node_%J.err
+#BSUB -n 16
+#BSUB -R "span[hosts=1]"
+#BSUB -q hpcintro
+#BSUB -W 00:30
+#BSUB -R "rusage[mem=2GB]"
+
+module load matplotlib/3.10.6-numpy-2.3.1-python-3.12.11
+module load mpi4py/4.0.3-python-3.12.11-openmpi-5.0.8
+
+OUTPUT="benchmark_sweep_1node.csv"
+PYTHON_SCRIPT="Mandelbrot_chunks.py"
+IMG_SIZE="2000x2000"
+
+echo "ranks,chunk_size,total_time,max_comp,min_comp,avg_comp" > "$OUTPUT"
+
+RANKS=(1 2 4 8 16)
+CHUNKS=(1 2 4 8 16 32 64)
+
+for P in "${RANKS[@]}"; do
+    for C in "${CHUNKS[@]}"; do
+        echo "=== [1-NODE] Executant ranks=$P, chunk_size=$C ==="
+        mpirun -n "$P" python3 "$PYTHON_SCRIPT" "$C" "$IMG_SIZE" >> "$OUTPUT"
+    done
+done
+
+echo "Escombrat 1-node completat amb èxit!"
+
+------------------------------------------------------------
+
+TERM_RUNLIMIT: job killed after reaching LSF run time limit.
+Exited with exit code 140.
+
+Resource usage summary:
+
+    CPU time :                                   2548.00 sec.
+    Max Memory :                                 217 MB
+    Average Memory :                             153.56 MB
+    Total Requested Memory :                     32768.00 MB
+    Delta Memory :                               32551.00 MB
+    Max Swap :                                   -
+    Max Processes :                              6
+    Max Threads :                                13
+    Run time :                                   1815 sec.
+    Turnaround time :                            1816 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <sweep_1node_29704160.err> for stderr output of this job.
+
