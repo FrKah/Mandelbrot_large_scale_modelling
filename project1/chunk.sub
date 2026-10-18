@@ -1,0 +1,25 @@
+#BSUB -J chunk
+#BSUB -q hpcintro
+#BSUB -W 1:00
+#BSUB -n 16
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=1GB]"
+#BSUB -o chunk_%J.out
+#BSUB -e chunk_%J.err
+
+module load mpi4py/4.0.3-python-3.12.11-openmpi-5.0.8
+module load matplotlib/3.10.3-numpy-2.3.1-python-3.12.11
+
+echo "hosts: $LSB_HOSTS"
+lscpu | grep "Model name"
+
+# per-chunk send: blocking Send vs non-blocking Isend, 1000x1000, chunk 10
+echo "version,ranks,time" > chunk_hpc.csv
+for n in 1 2 4 8 16; do
+    for v in blocking nonblocking; do
+        for rep in 1 2 3; do
+            t=$(mpirun -np $n python3 Mandelbrot_chunk_$v.py 10 1000x1000 | grep ",")
+            echo "$v,$t" >> chunk_hpc.csv
+        done
+    done
+done
