@@ -1,0 +1,18 @@
+#BSUB -J scal_nonblocking
+#BSUB -q hpcintro
+#BSUB -W 4:00
+#BSUB -n 8
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=4GB]"
+#BSUB -o scal_nonblocking_%J.out
+#BSUB -e scal_nonblocking_%J.err
+
+module load mpi4py/4.0.3-python-3.12.11-openmpi-5.0.8
+module load matplotlib/3.10.3-numpy-2.3.1-python-3.12.11
+
+lscpu | grep "Model name"
+
+echo "ranks,time,compute" > scaling_nonblocking_hpc.csv
+for n in 8 7 6 5 4 3 2 1; do
+    mpirun -np $n python3 Mandelbrot_static_nonblocking.py 10 10000x10000 | grep "," >> scaling_nonblocking_hpc.csv
+done
