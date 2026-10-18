@@ -1,0 +1,109 @@
+=== [1-NODE] Executant ranks=1, chunk_size=1 ===
+=== [1-NODE] Executant ranks=1, chunk_size=2 ===
+=== [1-NODE] Executant ranks=1, chunk_size=4 ===
+=== [1-NODE] Executant ranks=1, chunk_size=8 ===
+=== [1-NODE] Executant ranks=1, chunk_size=16 ===
+=== [1-NODE] Executant ranks=1, chunk_size=32 ===
+=== [1-NODE] Executant ranks=1, chunk_size=64 ===
+=== [1-NODE] Executant ranks=2, chunk_size=1 ===
+=== [1-NODE] Executant ranks=2, chunk_size=2 ===
+=== [1-NODE] Executant ranks=2, chunk_size=4 ===
+=== [1-NODE] Executant ranks=2, chunk_size=8 ===
+=== [1-NODE] Executant ranks=2, chunk_size=16 ===
+=== [1-NODE] Executant ranks=2, chunk_size=32 ===
+=== [1-NODE] Executant ranks=2, chunk_size=64 ===
+=== [1-NODE] Executant ranks=4, chunk_size=1 ===
+=== [1-NODE] Executant ranks=4, chunk_size=2 ===
+=== [1-NODE] Executant ranks=4, chunk_size=4 ===
+=== [1-NODE] Executant ranks=4, chunk_size=8 ===
+=== [1-NODE] Executant ranks=4, chunk_size=16 ===
+=== [1-NODE] Executant ranks=4, chunk_size=32 ===
+=== [1-NODE] Executant ranks=4, chunk_size=64 ===
+=== [1-NODE] Executant ranks=8, chunk_size=1 ===
+=== [1-NODE] Executant ranks=8, chunk_size=2 ===
+=== [1-NODE] Executant ranks=8, chunk_size=4 ===
+=== [1-NODE] Executant ranks=8, chunk_size=8 ===
+=== [1-NODE] Executant ranks=8, chunk_size=16 ===
+=== [1-NODE] Executant ranks=8, chunk_size=32 ===
+=== [1-NODE] Executant ranks=8, chunk_size=64 ===
+=== [1-NODE] Executant ranks=16, chunk_size=1 ===
+=== [1-NODE] Executant ranks=16, chunk_size=2 ===
+=== [1-NODE] Executant ranks=16, chunk_size=4 ===
+=== [1-NODE] Executant ranks=16, chunk_size=8 ===
+=== [1-NODE] Executant ranks=16, chunk_size=16 ===
+=== [1-NODE] Executant ranks=16, chunk_size=32 ===
+=== [1-NODE] Executant ranks=16, chunk_size=64 ===
+Escombrat 1-node completat amb èxit!
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 29706195: <sweep_1node> in cluster <dcc> Done
+
+Job <sweep_1node> was submitted from host <hpclogin1> by user <s253168> in cluster <dcc> at Tue Oct 13 10:21:30 2026
+Job was executed on host(s) <16*n-62-21-75>, in queue <hpcintro>, as user <s253168> in cluster <dcc> at Tue Oct 13 10:21:31 2026
+</zhome/de/c/223411> was used as the home directory.
+</zhome/de/c/223411/02616_LSM/Project1/final_chunk_study> was used as the working directory.
+Started at Tue Oct 13 10:21:31 2026
+Terminated at Tue Oct 13 11:02:52 2026
+Results reported at Tue Oct 13 11:02:52 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -J sweep_1node
+#BSUB -o sweep_1node_%J.out
+#BSUB -e sweep_1node_%J.err
+#BSUB -n 16
+#BSUB -R "span[hosts=1]"
+#BSUB -q hpcintro
+#BSUB -W 01:00
+#BSUB -R "rusage[mem=2GB]"
+
+module load matplotlib/3.10.6-numpy-2.3.1-python-3.12.11
+module load mpi4py/4.0.3-python-3.12.11-openmpi-5.0.8
+
+OUTPUT="benchmark_sweep_1node_final.csv"
+PYTHON_SCRIPT="Mandelbrot_chunks.py"
+IMG_SIZE="2000x2000"
+
+echo "ranks,chunk_size,total_time,max_comp,min_comp,avg_comp" > "$OUTPUT"
+
+RANKS=(1 2 4 8 16)
+CHUNKS=(1 2 4 8 16 32 64)
+
+for P in "${RANKS[@]}"; do
+    for C in "${CHUNKS[@]}"; do
+        echo "=== [1-NODE] Executant ranks=$P, chunk_size=$C ==="
+        mpirun -n "$P" python3 "$PYTHON_SCRIPT" "$C" "$IMG_SIZE" >> "$OUTPUT"
+    done
+done
+
+echo "Escombrat 1-node completat amb èxit!"
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   6729.43 sec.
+    Max Memory :                                 1413 MB
+    Average Memory :                             435.28 MB
+    Total Requested Memory :                     32768.00 MB
+    Delta Memory :                               31355.00 MB
+    Max Swap :                                   -
+    Max Processes :                              20
+    Max Threads :                                55
+    Run time :                                   2481 sec.
+    Turnaround time :                            2482 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <sweep_1node_29706195.err> for stderr output of this job.
+
