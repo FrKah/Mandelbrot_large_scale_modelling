@@ -1,0 +1,67 @@
+[BLOCK] Temps més lent: 23.0915s | Ociós total: 61.7%
+Gràfica desada a: load_balance_block.png
+[CYCLIC] Temps més lent: 10.0137s | Ociós total: 12.9%
+Gràfica desada a: load_balance_cyclic_4.png
+-rw-r--r-- 1 s253168 dtu 180159 Oct 12 19:33 load_balance_block.png
+-rw-r--r-- 1 s253168 dtu 124636 Oct 12 19:33 load_balance_cyclic_4.png
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 29703487: <mandelbrot_profile> in cluster <dcc> Done
+
+Job <mandelbrot_profile> was submitted from host <hpclogin1> by user <s253168> in cluster <dcc> at Mon Oct 12 19:32:39 2026
+Job was executed on host(s) <16*n-62-21-75>, in queue <hpcintro>, as user <s253168> in cluster <dcc> at Mon Oct 12 19:32:40 2026
+</zhome/de/c/223411> was used as the home directory.
+</zhome/de/c/223411/02616_LSM/Project1/profile> was used as the working directory.
+Started at Mon Oct 12 19:32:40 2026
+Terminated at Mon Oct 12 19:33:18 2026
+Results reported at Mon Oct 12 19:33:18 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -J mandelbrot_profile
+#BSUB -o profile_%J.out
+#BSUB -e profile_%J.err
+#BSUB -n 16
+#BSUB -R "span[hosts=1]"
+#BSUB -q hpcintro
+#BSUB -W 00:15
+#BSUB -R "rusage[mem=2GB]"
+
+module load matplotlib/3.10.6-numpy-2.3.1-python-3.12.11
+module load mpi4py/4.0.3-python-3.12.11-openmpi-5.0.8
+
+mpirun -n 16 python3 mandelbrot_profile.py block 2000x2000
+
+mpirun -n 16 python3 mandelbrot_profile.py cyclic 4 2000x2000
+
+ls -la load_balance_*.png
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   563.91 sec.
+    Max Memory :                                 1874 MB
+    Average Memory :                             1252.33 MB
+    Total Requested Memory :                     32768.00 MB
+    Delta Memory :                               30894.00 MB
+    Max Swap :                                   -
+    Max Processes :                              20
+    Max Threads :                                55
+    Run time :                                   38 sec.
+    Turnaround time :                            39 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <profile_29703487.err> for stderr output of this job.
+
