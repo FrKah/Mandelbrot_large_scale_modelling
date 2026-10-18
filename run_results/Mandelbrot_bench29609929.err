@@ -1,0 +1,23 @@
+Loaded dependency [numpy/2.3.1-python-3.12.11-openblas-0.3.30]: openblas/0.3.30
+Loaded dependency [python3/3.12.11]: sqlite3/3.50.1
+Loaded dependency [python3/3.12.11]: gcc/14.3.0-binutils-2.44
+Loaded dependency [numpy/2.3.1-python-3.12.11-openblas-0.3.30]: python3/3.12.11
+Loaded dependency [meson/1.8.2-python-3.12.11]: ninja/1.12.1
+Loaded dependency [numpy/2.3.1-python-3.12.11-openblas-0.3.30]: meson/1.8.2-python-3.12.11
+using numpy optimized for CPU-type XeonE5-2650v4.
+Loaded dependency [scipy/1.15.3-python-3.12.11]: numpy/2.3.1-python-3.12.11-openblas-0.3.30
+using scipy optimized for CPU-type XeonE5-2650v4.
+Loaded dependency [matplotlib/3.10.3-numpy-2.3.1-python-3.12.11]: scipy/1.15.3-python-3.12.11
+Loaded dependency [matplotlib/3.10.3-numpy-2.3.1-python-3.12.11]: freetype/2.13.3
+Loaded module: matplotlib/3.10.3-numpy-2.3.1-python-3.12.11
+
+Loading matplotlib/3.10.3-numpy-2.3.1-python-3.12.11
+  Loading requirement: openblas/0.3.30 sqlite3/3.50.1 gcc/14.3.0-binutils-2.44
+    python3/3.12.11 ninja/1.12.1 meson/1.8.2-python-3.12.11
+    numpy/2.3.1-python-3.12.11-openblas-0.3.30 scipy/1.15.3-python-3.12.11
+    freetype/2.13.3
+Loaded dependency [mpi4py/4.0.3-python-3.12.11-openmpi-5.0.8]: mpi/5.0.8-gcc-14.3.0-binutils-2.44
+Loaded module: mpi4py/4.0.3-python-3.12.11-openmpi-5.0.8
+
+Loading mpi4py/4.0.3-python-3.12.11-openmpi-5.0.8
+  Loading requirement: mpi/5.0.8-gcc-14.3.0-binutils-2.44

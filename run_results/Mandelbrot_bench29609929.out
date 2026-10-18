@@ -1,0 +1,74 @@
+1,37.7764
+1,40.2465
+1,38.3447
+2,31.7492
+2,30.6033
+2,30.1214
+4,21.3794
+4,20.2844
+4,20.2577
+8,11.9110
+8,11.8217
+8,11.6267
+16,6.5502
+16,6.4010
+16,6.7036
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 29609929: <Mandelbrot_bench> in cluster <dcc> Done
+
+Job <Mandelbrot_bench> was submitted from host <n-62-27-23> by user <s262240> in cluster <dcc> at Tue Oct  6 10:05:41 2026
+Job was executed on host(s) <16*n-62-21-77>, in queue <hpcintro>, as user <s262240> in cluster <dcc> at Tue Oct  6 10:05:43 2026
+</zhome/55/9/232051> was used as the home directory.
+</zhome/55/9/232051/02616-student/Mandelbrot_large_scale_modelling> was used as the working directory.
+Started at Tue Oct  6 10:05:43 2026
+Terminated at Tue Oct  6 10:11:19 2026
+Results reported at Tue Oct  6 10:11:19 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#BSUB -J Mandelbrot_bench
+#BSUB -o Mandelbrot_bench%J.out
+#BSUB -e Mandelbrot_bench%J.err
+#BSUB -n 16
+#BSUB -R "span[hosts=1]"
+#BSUB -q hpcintro
+#BSUB -W 00:30
+#BSUB -R "rusage[mem=1GB]"
+
+module load matplotlib/3.10.3-numpy-2.3.1-python-3.12.11
+module load mpi4py/4.0.3-python-3.12.11-openmpi-5.0.8
+
+for p in 1 2 4 8 16; do
+    for rep in 1 2 3; do
+        mpirun -n $p python3 -u Mandelbrot.py 10 1000x1000
+    done
+done
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   1183.52 sec.
+    Max Memory :                                 711 MB
+    Average Memory :                             447.50 MB
+    Total Requested Memory :                     16384.00 MB
+    Delta Memory :                               15673.00 MB
+    Max Swap :                                   -
+    Max Processes :                              12
+    Max Threads :                                31
+    Run time :                                   336 sec.
+    Turnaround time :                            338 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <Mandelbrot_bench29609929.err> for stderr output of this job.
+
