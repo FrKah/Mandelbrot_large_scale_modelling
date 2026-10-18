@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 """
-Mandelbrot Load Balancing Comparison Plotter (No Pandas)
-========================================================
 Compares Static Block vs. Cyclic Distribution side-by-side in SVG format.
 """
 

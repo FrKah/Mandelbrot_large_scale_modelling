@@ -33,8 +33,6 @@
 === [MULTI-NODE] Executant ranks=16, chunk_size=16 ===
 === [MULTI-NODE] Executant ranks=16, chunk_size=32 ===
 === [MULTI-NODE] Executant ranks=16, chunk_size=64 ===
-Escombrat multi-node completat amb èxit!
-
 ------------------------------------------------------------
 Sender: LSF System <lsfadmin@hpc.dtu.dk>
 Subject: Job 29706196: <sweep_multinode> in cluster <dcc> Done
@@ -82,8 +80,6 @@ for P in "${RANKS[@]}"; do
         mpirun -n "$P" python3 "$PYTHON_SCRIPT" "$C" "$IMG_SIZE" >> "$OUTPUT"
     done
 done
-
-echo "Escombrat multi-node completat amb èxit!"
 
 ------------------------------------------------------------
 

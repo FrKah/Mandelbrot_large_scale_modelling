@@ -4,7 +4,7 @@ from mpi4py import MPI
 from time import perf_counter as time
 
 import matplotlib
-matplotlib.use("Agg")
+matplotlib.use("Agg") # Since we are working inside the cluster.
 import matplotlib.pyplot as plt
 
 comm = MPI.COMM_WORLD
@@ -13,7 +13,7 @@ num_procs = comm.Get_size()
 
 mode = "block"
 chunk_size = 4
-size = (2000, 2000)
+size = (2000, 2000) # Larger size, however still less that 10.000 x 10.000, because of the execution time.
 xlim = (-2.2, 0.75)
 ylim = (-1.3, 1.3)
 
@@ -34,7 +34,7 @@ yconst = np.diff(ylim)[0] / size[1]
 
 
 if mode == "block":
-    rows_per_proc = size[0] // num_procs
+    rows_per_proc = size[0] // num_procs # Standard division by number of ranks.
     remainder = size[0] % num_procs
     
     start = rank * rows_per_proc + min(rank, remainder)
@@ -47,13 +47,14 @@ if mode == "block":
             e = s + rows_per_proc + (1 if r < remainder else 0)
             all_chunks_info.append((r, s, e))
 else:
-    chunks = [(s, min(s + chunk_size, size[0])) for s in range(0, size[0], chunk_size)]
+    chunks = [(s, min(s + chunk_size, size[0])) for s in range(0, size[0], chunk_size)] # division by a cyclic shared
     my_chunks = [c for i, c in enumerate(chunks) if (i % num_procs) == rank]
     all_chunks_info = [(i % num_procs, s, e) for i, (s, e) in enumerate(chunks)]
 
 comm.Barrier()
 t_start = time()
 
+# compute local chunk
 local_results = []
 for start, end in my_chunks:
     chunk = np.zeros((end - start, size[1]))
@@ -70,7 +71,7 @@ for start, end in my_chunks:
     local_results.append(chunk)
 
 t_comp = time() - t_start
-
+# Gather at rank 0
 if rank == 0:
     image = np.zeros(size)
     local_idx = 0
@@ -96,14 +97,14 @@ else:
     comm.Send(t_buf, dest=0, tag=9999)
 
 comm.Barrier()
-
+# Compute the weight balancing
 if rank == 0:
     t_slowest = np.max(comp_times)
     idle_times = t_slowest - comp_times
     total_core_time = num_procs * t_slowest
     idle_pct = (np.sum(idle_times) / total_core_time) * 100.0 if total_core_time > 0 else 0.0
 
-    print(f"[{mode.upper()}] Temps més lent: {t_slowest:.4f}s | Ociós total: {idle_pct:.1f}%")
+    print(f"[{mode.upper()}] Slowest: {t_slowest:.4f}s | {idle_pct:.1f}%")
 
     csv_filename = f"profile_{mode}{f'_{chunk_size}' if mode == 'cyclic' else ''}.csv"
     with open(csv_filename, "w") as f:
@@ -135,4 +136,4 @@ if rank == 0:
 
     fig_filename = f"load_balance_{mode}{f'_{chunk_size}' if mode == 'cyclic' else ''}.png"
     plt.savefig(fig_filename, dpi=300, bbox_inches="tight")
-    print(f"Gràfica desada a: {fig_filename}")
+    print(f"Saved graph: {fig_filename}")

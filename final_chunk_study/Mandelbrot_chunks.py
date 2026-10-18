@@ -30,6 +30,7 @@ ylim = np.asarray(ylim)
 xconst = np.diff(xlim)[0] / size[0]
 yconst = np.diff(ylim)[0] / size[1]
 
+# Sequential benchmark baseline
 if num_procs == 1:
     t0 = time()
     for s in range(0, size[0], chunk_size):
@@ -49,6 +50,7 @@ if num_procs == 1:
 
 num_workers = num_procs - 1
 
+# Static round-robin chunk decomposition (cyclic)
 chunks = [(s, min(s + chunk_size, size[0])) for s in range(0, size[0], chunk_size)]
 my_chunks = [c for i, c in enumerate(chunks) if (i % num_workers) + 1 == rank] # assigne value to each chunk
 
@@ -74,7 +76,7 @@ if rank>0:
         t_comp = time()-t_start
         local_chunks.append(chunk)
 
-
+# Gather results at root
 if rank == 0:
     image = np.zeros(size)
     for i, (start, end) in enumerate(chunks):
@@ -88,6 +90,7 @@ else:
 comm.Barrier()
 elapsed = time() - t0
 
+# Collect execution metrics across workers
 val_max = t_comp if rank > 0 else 0.0                                                                 
 val_min = t_comp if rank > 0 else float("inf")                                                                
 val_sum = t_comp if rank > 0 else 0.0                                                            
@@ -107,3 +110,5 @@ if rank == 0 and sum_comp is not None and max_comp is not None and min_comp is n
     # plt.ylabel(r"y / Im(p_0)")
     # plt.margins(0, 0)
     # plt.savefig("Figure_1.png", bbox_inches="tight", pad_inches=0)
+
+    # we don't show the plot to save time.

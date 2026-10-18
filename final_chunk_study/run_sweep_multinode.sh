@@ -26,5 +26,3 @@ for P in "${RANKS[@]}"; do
         mpirun -n "$P" python3 "$PYTHON_SCRIPT" "$C" "$IMG_SIZE" >> "$OUTPUT"
     done
 done
-
-echo "Escombrat multi-node completat amb èxit!"
