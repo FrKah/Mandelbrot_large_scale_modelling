@@ -1,7 +1,7 @@
-[BLOCK] Temps més lent: 23.0915s | Ociós total: 61.7%
+[BLOCK] Slowest: 23.0915s | 61.7%
 Gràfica desada a: load_balance_block.png
-[CYCLIC] Temps més lent: 10.0137s | Ociós total: 12.9%
-Gràfica desada a: load_balance_cyclic_4.png
+[CYCLIC] Slowest: 10.0137s | 12.9%
+Saved graph in: load_balance_cyclic_4.png
 -rw-r--r-- 1 s253168 dtu 180159 Oct 12 19:33 load_balance_block.png
 -rw-r--r-- 1 s253168 dtu 124636 Oct 12 19:33 load_balance_cyclic_4.png
 
